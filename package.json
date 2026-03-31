@@ -1,0 +1,21 @@
+{
+  "name": "@davydepauw/frontend-skills",
+  "version": "0.1.0",
+  "description": "Front-end agent skills for Claude Code",
+  "author": "Davy De Pauw",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agent-skills",
+    "frontend"
+  ],
+  "scripts": {
+    "release:dry": "semantic-release --dry-run"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.6",
+    "semantic-release": "^25.0.3"
+  }
+}
