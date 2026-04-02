@@ -4,14 +4,14 @@
 
 Write CSS that works in the oldest supported browser first, then layer improvements for browsers that support them. The baseline must be functional and usable — not merely "not broken".
 
+Only use `@supports` for **Newly Available** features. Widely Available features have sufficient browser coverage to use directly — wrapping them in `@supports` adds noise without benefit. See `references/modern-css.md` for the support status of each feature.
+
 ```
-Baseline CSS → works everywhere
+Baseline CSS       → works everywhere
   ↓
-@supports layer → works in supporting browsers
+Widely Available   → use directly, no @supports needed
   ↓
-@media layer → adapts to device context
-  ↓
-@layer enhancement → highest capability browsers
+Newly Available    → wrap in @supports, provide a functional fallback
 ```
 
 ---
@@ -26,18 +26,15 @@ Start with the simplest layout that works universally. Add enhancements on top.
   margin-block-end: 1rem;
 }
 
-/* Enhancement: CSS Grid in supporting browsers */
-@supports (display: grid) {
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
-  }
+/* Enhancement: CSS Grid is widely available — use directly */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
 
-  /* Remove baseline margin now that grid gap handles spacing */
-  .card-grid > * {
-    margin-block-end: 0;
-  }
+.card-grid > * {
+  margin-block-end: 0;
 }
 ```
 
@@ -51,8 +48,8 @@ Start with the simplest layout that works universally. Add enhancements on top.
   /* styles for when property is supported */
 }
 
-@supports not (display: grid) {
-  /* fallback for when grid is not supported */
+@supports not (property: value) {
+  /* fallback for when property is not supported */
 }
 
 @supports (display: grid) and (gap: 1rem) {
@@ -60,89 +57,57 @@ Start with the simplest layout that works universally. Add enhancements on top.
 }
 ```
 
-### Testing modern features
+### When to use it
+Only for Newly Available features where absence degrades the experience:
+
 ```css
-/* Container queries */
-@supports (container-type: inline-size) {
-  .wrapper {
-    container-type: inline-size;
+/* interpolate-size — Newly Available */
+@supports (interpolate-size: allow-keywords) {
+  :root { interpolate-size: allow-keywords; }
+
+  .accordion__content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 300ms ease;
+  }
+
+  .accordion.is-open .accordion__content {
+    block-size: auto;
   }
 }
 
-/* :has() */
-@supports selector(:has(+ *)) {
-  form:has(:invalid) .submit {
-    opacity: 0.5;
+/* ::details-content — Newly Available */
+@supports selector(::details-content) {
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 300ms ease, content-visibility 300ms allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
   }
 }
 
-/* color-mix() */
-@supports (background: color-mix(in oklch, red, blue)) {
-  .tint {
-    background: color-mix(in oklch, var(--color-primary) 20%, transparent);
+/* @scope — Newly Available */
+@supports selector(@scope) {
+  @scope (.card) to (.card__footer) {
+    p { color: var(--s-color-text-secondary); }
   }
 }
 
-/* CSS nesting */
-@supports (selector(&)) {
-  .card {
-    & .card__title { font-size: 1.25rem; }
+/* field-sizing — Newly Available */
+@supports (field-sizing: content) {
+  textarea {
+    field-sizing: content;
+    min-block-size: 3lh;
+    max-block-size: 20lh;
   }
 }
 ```
 
 ### `@supports` vs `@layer`
 Use `@supports` to **detect capability**. Use `@layer` to **manage specificity and load order**. They solve different problems and compose well.
-
----
-
-## Feature Query Patterns
-
-### Opt-in enhancement
-```css
-/* Baseline */
-.layout {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* Enhancement */
-@supports (container-type: inline-size) {
-  .layout {
-    display: block;
-  }
-
-  .layout__item {
-    container-type: inline-size;
-  }
-
-  @container (min-width: 400px) {
-    .card { display: grid; }
-  }
-}
-```
-
-### Opt-out fallback (graceful degradation direction)
-```css
-/* Modern baseline */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-}
-
-/* Fallback for unsupported browsers */
-@supports not (display: grid) {
-  .grid {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .grid > * {
-    flex: 0 1 200px;
-  }
-}
-```
-
-Prefer opt-in over opt-out — it's easier to reason about and layers don't fight each other.
 
 ---
 
@@ -154,8 +119,8 @@ Wrap third-party CSS in an anonymous layer so its specificity cannot override yo
 @import url('https://cdn.example.com/component.css') layer;
 
 /* Your styles in a named layer always win */
-@layer components {
-  .component { color: var(--color-text); }
+@layer atoms {
+  .component { color: var(--s-color-text); }
 }
 ```
 
@@ -163,68 +128,84 @@ Wrap third-party CSS in an anonymous layer so its specificity cannot override yo
 
 ## Common Features and Their Fallbacks
 
-### CSS Grid → Flexbox
+### CSS Grid, Subgrid, `:has()`, container queries, `color-mix()`
+All Widely Available — use directly without `@supports`.
+
 ```css
+/* Grid */
 .layout {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-@supports (display: grid) {
-  .layout {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-```
-
-### Subgrid → explicit row heights or min-height alignment
-```css
-/* Fallback: equal-height cards via align-items: stretch */
-.grid {
   display: grid;
-  align-items: stretch;
+  grid-template-columns: repeat(3, 1fr);
 }
 
-@supports (grid-template-rows: subgrid) {
-  .card {
-    display: grid;
-    grid-row: span 3;
-    grid-template-rows: subgrid;
-  }
+/* Subgrid */
+.card {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
 }
-```
 
-### `color-mix()` → static fallback colour
-```css
+/* :has() */
+form:has(:invalid) .submit {
+  opacity: 0.5;
+}
+
+/* color-mix() */
 .tint {
-  background: rgba(0, 80, 230, 0.2); /* fallback */
+  background: color-mix(in oklch, var(--s-color-primary) 20%, transparent);
+}
+```
+
+### `interpolate-size` → static show/hide fallback
+```css
+/* Fallback: instant open/close */
+.accordion__content {
+  display: none;
 }
 
-@supports (background: color-mix(in oklch, red, blue)) {
-  .tint {
-    background: color-mix(in oklch, var(--color-primary) 20%, transparent);
+.accordion.is-open .accordion__content {
+  display: block;
+}
+
+/* Enhancement: animated height */
+@supports (interpolate-size: allow-keywords) {
+  :root { interpolate-size: allow-keywords; }
+
+  .accordion__content {
+    display: block;
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 300ms ease;
+  }
+
+  .accordion.is-open .accordion__content {
+    block-size: auto;
   }
 }
 ```
 
-### `:has()` → class-based JS fallback
+### `::details-content` → native `<details>` behaviour fallback
 ```css
-/* JS adds .has-error when any input is invalid */
-.form.has-error .submit { opacity: 0.5; }
+/* Fallback: browser default open/close, no animation */
 
-@supports selector(:has(+ *)) {
-  /* Override with native :has() where supported */
-  .form:has(:invalid) .submit { opacity: 0.5; }
+/* Enhancement: animated */
+@supports selector(::details-content) {
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 300ms ease, content-visibility 300ms allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
 }
 ```
 
-### Custom properties → static values
+### Custom properties → inline fallback value
 ```css
 .button {
-  background: #0050e6; /* hardcoded fallback */
-  background: var(--color-primary, #0050e6); /* custom property with fallback */
+  background: var(--c-button-bg, var(--s-color-primary));
 }
 ```
 
@@ -232,8 +213,8 @@ Wrap third-party CSS in an anonymous layer so its specificity cannot override yo
 
 ## What Not to Do
 
-**Don't feature-detect layout as a binary**
-Some browsers support grid but not subgrid, or support container queries but not `:has()`. Test for the specific feature you're using.
+**Don't wrap Widely Available features in `@supports`**
+`:has()`, `@container`, `color-mix()`, subgrid, and CSS nesting are in all modern browsers. The guard adds noise and a false impression that these features are fragile.
 
 **Don't use `@supports` to target specific browsers**
 `@supports` is about capability, not identity. Browser targeting belongs in bug reports, not production CSS.

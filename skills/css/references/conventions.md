@@ -38,46 +38,6 @@ Do not use state prefixes for design variations — those are BEM modifiers.
 
 ---
 
-## Property Declaration Order
-
-Group related properties together. Recommended order:
-
-```css
-.element {
-  /* 1. Positioning */
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-
-  /* 2. Box model */
-  display: flex;
-  flex-direction: column;
-  inline-size: 100%;
-  padding: 1rem;
-  margin: 0 auto;
-
-  /* 3. Typography */
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.5;
-  color: var(--color-text);
-  text-align: center;
-
-  /* 4. Visual */
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  opacity: 1;
-
-  /* 5. Animation / interaction */
-  transition: opacity 200ms ease;
-  cursor: pointer;
-}
-```
-
----
-
 ## File Organisation
 
 Organise CSS following **atomic design principles** — see `references/atomic-design.md` for the full stage definitions. The folder structure mirrors the hierarchy directly:
@@ -154,15 +114,6 @@ src/
 
 ## Comment Standards
 
-### Section headers
-Use a consistent divider for major sections:
-
-```css
-/* ==========================================================================
-   CARD COMPONENT
-   ========================================================================== */
-```
-
 ### Public API (design tokens)
 Document intent and usage for anything a consumer will reference:
 
@@ -200,13 +151,17 @@ Never comment on what the code obviously does:
 
 - **One property per line** — no shorthand cramming multiple declarations on one line.
 - **Space after colon**: `color: red` not `color:red`.
+- **Include one space** before the opening brace.
 - **Trailing semicolons** on all declarations, including the last one.
 - **Group CSS variables** in a class at the top
 - **Blank line below CSS variables** and the rest of the rules.
 - **Blank line between rule blocks**.
 - **No blank lines inside a rule block** (use comment headers to separate logical groups within a large block instead).
 - **Closing brace on its own line**.
-- **Selector per line** when a rule has multiple selectors:
+- **Selector per line** when a rule has multiple selectors.
+- **Lowercase all hex values**
+- **Use shorthand hex values where available**.
+- **Avoid specifying units for zero values**
 
 ```css
 h1,
@@ -223,6 +178,37 @@ h3 {
 
 ---
 
+## Formatting — Prettier
+
+CSS formatting is enforced by [Prettier](https://prettier.io/) with [`prettier-plugin-css-order`](https://github.com/Siilwyn/prettier-plugin-css-order) for automatic property ordering. Do not manually reorder properties — let the plugin handle it.
+
+Project config (`.prettierrc` or `prettier.config.js`):
+
+```json
+{
+  "files": ["*.css", "*.scss"],
+  "options": {
+    "tabWidth": 4,
+    "useTabs": true,
+    "plugins": ["prettier-plugin-css-order"],
+    "cssDeclarationSorterOrder": "smacss",
+    "trailingComma": "all",
+    "semi": true,
+    "singleQuote": false
+  }
+}
+```
+
+Key settings:
+- **Tabs, width 4** — indentation
+- **SMACSS order** — properties sorted by: box model → border → background → text → other
+- **Semicolons on** — always
+- **Double quotes** — for any string values
+
+When generating CSS, write properties in any reasonable order — Prettier will reorder on save. Focus on correctness and completeness, not property sequence.
+
+---
+
 ## Things to Avoid
 
 | Anti-pattern | Why | Instead |
@@ -233,4 +219,5 @@ h3 {
 | Colour literals in components | Hard to theme | Use `var(--s-color-*)` tokens |
 | Utility classes for layout/spacing | Couples structure to presentation; scattered responsibility | Write component-scoped CSS |
 | Empty rule blocks | Dead code | Remove them |
+| Specifying units for zero values | Unnecessary bytes | Omit units when value is 0 |
 | Vendor prefixes by hand | Maintenance burden | Use PostCSS Autoprefixer |

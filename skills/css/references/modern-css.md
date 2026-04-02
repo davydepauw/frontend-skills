@@ -4,17 +4,35 @@
 
 Features below are **Baseline Widely Available** unless noted. Check [caniuse.com](https://caniuse.com) for exact versions.
 
-| Feature | Baseline | Notes |
-|---------|----------|-------|
-| `:has()` | Widely Available | No Firefox < 121 |
-| Container queries (`@container`) | Widely Available | — |
-| `@layer` | Widely Available | — |
-| CSS nesting | Widely Available | — |
-| Subgrid | Widely Available | — |
-| `color-mix()` | Widely Available | — |
-| `@scope` | Newly Available | Chrome 118+, Firefox 128+, Safari 17.4+ |
-| `field-sizing` | Newly Available | Chrome 123+, not Safari/Firefox yet |
-| Logical properties | Widely Available | — |
+| Feature | Baseline | `@supports` needed? |
+|---------|----------|---------------------|
+| `:has()` | Widely Available | No |
+| Container queries (`@container`) | Widely Available | No |
+| `@starting-style` | Widely Available | No |
+| `@layer` | Widely Available | No |
+| CSS nesting | Widely Available | No |
+| Subgrid | Widely Available | No |
+| `color-mix()` | Widely Available | No |
+| `@property` | Widely Available | No — but use as enhancement |
+| `@scope` | Newly Available | Yes — Chrome 118+, Firefox 128+, Safari 17.4+ |
+| `field-sizing` | Newly Available | Yes — Chrome 123+, not Safari/Firefox yet |
+| `interpolate-size` | Newly Available | Yes — Chrome 129+, not Safari/Firefox yet |
+| `::details-content` | Newly Available | Yes — Chrome 131+, Firefox 131+ |
+| Logical properties | Widely Available | No |
+
+## When to use `@supports`
+
+Use `@supports` only for **Newly Available** features where the absence of the feature would degrade the experience. Widely Available features have sufficient browser coverage to use directly.
+
+```css
+/* No @supports needed — widely available */
+.card:has(img) { padding: 0; }
+
+/* @supports needed — not yet in all browsers */
+@supports (interpolate-size: allow-keywords) {
+  :root { interpolate-size: allow-keywords; }
+}
+```
 
 ---
 
@@ -172,7 +190,7 @@ Limit styles to a subtree without increasing specificity.
 - Donut scopes: "style everything in `.card` except inside `.ad-slot`".
 
 ### Current support
-Newly available — use `@supports` or progressive enhancement for production (see `progressive-enhancement.md`).
+Newly available — wrap in `@supports selector(@scope)` for production use.
 
 ---
 
@@ -228,16 +246,136 @@ Write direction-agnostic CSS that works in LTR and RTL layouts.
 
 ---
 
+## `@starting-style` — Entry Animations
+
+Animate elements when they first appear in the DOM or transition from `display: none`.
+
+```css
+.dialog {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 300ms ease, translate 300ms ease;
+}
+
+@starting-style {
+  .dialog {
+    opacity: 0;
+    translate: 0 1rem;
+  }
+}
+```
+
+Also works with `display: none` transitions (requires `transition-behavior: allow-discrete`):
+
+```css
+.toast {
+  display: block;
+  opacity: 1;
+  transition: opacity 200ms ease, display 200ms allow-discrete;
+}
+
+.toast.is-hidden {
+  display: none;
+  opacity: 0;
+}
+
+@starting-style {
+  .toast {
+    opacity: 0;
+  }
+}
+```
+
+Use directly — no `@supports` needed.
+
+---
+
+## `interpolate-size: allow-keywords` — Animating to `auto`
+
+Enables transitions and animations to and from intrinsic size keywords (`auto`, `min-content`, `max-content`, `fit-content`).
+
+```css
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  .accordion__content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 300ms ease;
+  }
+
+  .accordion.is-open .accordion__content {
+    block-size: auto;
+  }
+}
+```
+
+Set on `:root` to enable globally. Without `@supports`, the transition simply won't animate — the element will still show/hide correctly, so no additional fallback is needed.
+
+---
+
+## `@property` — Registered Custom Properties
+
+Register a custom property with a type, initial value, and inheritance behaviour. Enables animating custom properties.
+
+```css
+@property --card-highlight {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
+.card {
+  --card-highlight: transparent;
+  background: var(--card-highlight);
+  transition: --card-highlight 300ms ease;
+}
+
+.card:hover {
+  --card-highlight: color-mix(in oklch, var(--s-color-primary) 10%, transparent);
+}
+```
+
+Widely available — use directly. Falls back gracefully: unregistered custom properties are not animatable, so the hover state will simply snap without a transition in unsupporting browsers.
+
+---
+
+## `::details-content` — Styling `<details>` Content
+
+Style and animate the expandable content of a `<details>` element.
+
+```css
+@supports selector(::details-content) {
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 300ms ease, content-visibility 300ms allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+}
+```
+
+Requires `interpolate-size: allow-keywords` on `:root` for the `block-size: auto` transition to animate. Without it, the content still shows/hides correctly but without animation.
+
+---
+
 ## `field-sizing: content`
 
 Auto-resize `<textarea>` and `<input>` to fit their content.
 
 ```css
-textarea {
-  field-sizing: content;
-  min-height: 3lh;   /* minimum 3 line heights */
-  max-height: 20lh;
+@supports (field-sizing: content) {
+  textarea {
+    field-sizing: content;
+    min-block-size: 3lh;
+    max-block-size: 20lh;
+  }
 }
 ```
 
-Currently Chrome 123+ only. Use a JS resize observer as a fallback.
+Use a JS resize observer as a fallback where needed.

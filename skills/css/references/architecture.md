@@ -35,6 +35,29 @@ These approaches compose — BEM naming inside CSS Modules, atomic design stage 
 - **Avoid deeply nested selectors.** `.card .card__title` is redundant; `.card__title` is sufficient.
 
 ### State classes
+If possible, try to represent your UI state using HTML attributes first, and only reach for class names when you really need them.
+
+```html
+<nav>
+  <a href="/about" class="nav-link" aria-current="page">About</a>
+  <a href="/blog" class="nav-link">Blog</a>
+  <a href="/contact" class="nav-link">Contact Me</a>
+</nav>
+```
+
+Using `aria-current` instead of `active` class:
+```css
+.nav-link[aria-current="page"] {
+  border-bottom: 7px solid yellow;
+}
+```
+
+Other stateful, semantic selectors:
+- The `:disabled` pseudo-class and the `[disabled]` attribute selector make great stateful, semantic selectors for disabled fields.
+- Depending on your markup, the `:invalid` pseudo-class or `aria-invalid` could be used to style form fields with invalid values.
+- `aria-selected` is a great style hook for the active tab in an ARIA tabs widget.
+- `[role="tab"]` could be a good style hook for ARIA tabs in general.
+
 For JS-driven state, prefer a separate convention that doesn't conflict with BEM modifiers:
 ```css
 .card__button.is-loading { }   /* JS state */
