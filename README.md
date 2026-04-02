@@ -2,36 +2,26 @@
 
 A collection of front-end agent skills for Claude Code.
 
-## Installation
+## Installation & Updates
 
-Install all skills into the current project:
+Re-running the same command installs or updates to the latest version.
+
+All skills:
 ```
 pnpx skills add davydepauw/frontend-skills --skill='*'
 ```
 
-Install a specific skill:
+A specific skill:
 ```
 pnpx skills add davydepauw/frontend-skills --skill='<skill-name>'
 ```
 
-Install all skills globally (available across all projects):
+All skills globally (available across all projects):
 ```
 pnpx skills add davydepauw/frontend-skills --skill='*' -g
 ```
 
-## Updating
-
-Re-run the install command to fetch the latest version:
-```
-pnpx skills add davydepauw/frontend-skills --skill='*'
-```
-
-Or update a specific skill:
-```
-pnpx skills add davydepauw/frontend-skills --skill='<skill-name>'
-```
-
-## Skills
+## Available skills
 
 | Skill | Description |
 |-------|-------------|
