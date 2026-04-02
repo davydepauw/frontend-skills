@@ -18,6 +18,7 @@ allowed-tools:
 | What you are doing | Read this file |
 |--------------------|----------------|
 | Structuring a codebase (BEM, CSS Modules, `@layer`, atomic design) | `references/architecture.md` |
+| Styling UI state (ARIA attributes, `:has()`, `is-`/`has-` prefixes, state tokens) | `references/stateful-selectors.md` |
 | Applying atomic design to a component system | `references/atomic-design.md` |
 | Naming, formatting, and file-organisation conventions | `references/conventions.md` |
 | CSS custom properties, token taxonomies, theme systems | `references/design-tokens.md` |

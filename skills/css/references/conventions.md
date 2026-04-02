@@ -26,15 +26,7 @@ Prefer **what it is** over **what it looks like**:
 ```
 
 ### State prefixes
-Reserve a consistent prefix for JS-driven states:
-
-```css
-.is-loading { }    /* transient UI state */
-.is-invalid { }     /* content-dependent state */
-.js-hidden { }     /* JS-only visibility toggle */
-```
-
-Do not use state prefixes for design variations — those are BEM modifiers.
+See `references/stateful-selectors.md` for the full guide on state naming, ARIA attribute selectors, and `:has()` patterns.
 
 ---
 
