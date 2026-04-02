@@ -23,7 +23,7 @@ pnpx skills add davydepauw/frontend-skills --skill='*' -g
 
 | Skill | Description |
 |-------|-------------|
-| [example](./skills/example/SKILL.md) | Example skill — replace with your own |
+| [css](./skills/css/SKILL.md) | CSS architecture, tokens, modern CSS, performance, and accessibility |
 
 ## Adding a new skill
 
