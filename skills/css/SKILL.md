@@ -50,6 +50,27 @@ Removing motion entirely can break comprehension (e.g., collapsed accordions wit
 **5. High specificity blocks the cascade — check before reaching for `!important`**
 Prefer lower-specificity selectors or cascade layers. `!important` is a smell — use component-scoped CSS with proper `@layer` ordering instead.
 
+**6. Sass/SCSS is legacy — do not introduce it in new projects**
+New projects use native CSS or PostCSS. Only write `.scss` when working in an existing legacy codebase that already uses it.
+
+**7. No arbitrary abbreviations in class names**
+Write class names in full unless the short form mirrors an HTML element name. `.button` not `.btn`; `.image` not `.img`; `.description` not `.desc`. Short forms that mirror HTML elements are acceptable: `.nav`.
+
+**8. Local component variables use no prefix — not `--_`**
+Local variables inside a component selector are named `--card-padding`, never `--_card-padding`. The underscore prefix is not a convention used here.
+
+**9. Local component variables must reference `--c-` or `--s-` tokens — never `--p-` primitives**
+`--card-padding: var(--p-spacing-4)` is wrong. Always go through the semantic layer: `--card-padding: var(--c-card-padding, var(--s-component-padding))`.
+
+**10. A card with sections (media, content, footer) is an organism — not a molecule**
+Place it in `organisms/`. A molecule is a simple grouping of 2–3 atoms with a single purpose. If it has distinct internal areas, it is an organism.
+
+**11. Only use valid CSS properties**
+Never write properties that do not exist in CSS. ARIA attributes (`aria-hidden`, `aria-expanded`), HTML attributes (`disabled`, `hidden`), and JavaScript-only concepts are not CSS properties. If it isn't in the CSS specification, it does not belong in a ruleset.
+
+**12. Never style bare HTML elements inside a component — use BEM element classes**
+Every meaningful element inside a component gets its own BEM class. Style `.card__image`, not `img` nested inside `.card__media`. Bare element selectors inside components are fragile and break BEM's flat, explicit structure.
+
 ---
 
 ## Workflow

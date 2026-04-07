@@ -245,3 +245,24 @@ Use relative units (`em`, `rem`, `lh`) for spacing, not `px`. Test by applying t
 - `display: none` and `visibility: hidden` set `aria-hidden="true"` implicitly. Don't combine with an explicit `aria-hidden`.
 - `content: "..."` in `::before`/`::after` **is** read by some screen readers. Never put meaningful text in `content`. For decorative icons, use `content: ""` or `aria-hidden="true"` on the element.
 - `pointer-events: none` prevents mouse interaction but does **not** remove an element from tab order or screen reader access. Use `tabindex="-1"` and `aria-hidden` explicitly.
+
+## Only Use Valid CSS Properties
+
+Never write properties that do not exist in the CSS specification. HTML attributes, ARIA attributes, and JavaScript concepts are not CSS properties and will be silently ignored by the browser.
+
+```css
+/* Invalid — aria-hidden is an HTML attribute, not a CSS property */
+.form-field__hint {
+  aria-hidden: true;
+}
+```
+
+To control ARIA state, set the attribute in HTML or JavaScript:
+```html
+<span aria-hidden="true">decorative text</span>
+```
+```js
+element.setAttribute('aria-hidden', 'true')
+```
+
+ARIA attributes *can* be used as CSS **selectors** (e.g. `[aria-hidden="true"]`), but only where documented in `references/stateful-selectors.md` — as semantic style hooks, not as a substitute for proper visibility management.

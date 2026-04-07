@@ -1,5 +1,17 @@
 # CSS Conventions
 
+## Tooling
+
+| Tool | Status | Use when |
+|------|--------|----------|
+| Native CSS | Preferred | All new projects |
+| PostCSS | Preferred | When transforms are needed (autoprefixer, `css-order`, etc.) |
+| Sass / SCSS | Legacy | Existing projects only — do not introduce in new projects |
+
+New projects use native CSS features (`@layer`, nesting, custom properties, `@scope`) which cover the majority of what Sass provided. PostCSS handles the remaining tooling needs. Do not add Sass to a new project.
+
+---
+
 ## Naming
 
 ### Casing
@@ -11,6 +23,17 @@
 | `@keyframes` | `camelCase` or `kebab-case` | `fadeIn`, `slide-up` |
 
 Pick one and be consistent within a project. Never mix within a file.
+
+### No arbitrary abbreviations
+Avoid shortening class names for brevity unless the short form is a universally recognised term — such as an HTML element name:
+
+| Wrong | Correct |
+|-------|---------|
+| `.btn` | `.button` |
+| `.img` | `.image` |
+| `.desc` | `.description` |
+
+Acceptable short forms mirror HTML element names and are unambiguous: `.nav` (mirrors `<nav>`). Invented abbreviations like `.btn` have no standard basis and cause inconsistency.
 
 ### Semantic vs presentational names
 Prefer **what it is** over **what it looks like**:

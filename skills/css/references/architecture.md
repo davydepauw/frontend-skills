@@ -33,6 +33,23 @@ These approaches compose — BEM naming inside CSS Modules, atomic design stage 
 - **Elements belong to the block, not to each other.** `.card__title__icon` is wrong; use `.card__icon`.
 - **Modifiers describe state or variation**, never layout. Layout is the parent's responsibility.
 - **Avoid deeply nested selectors.** `.card .card__title` is redundant; `.card__title` is sufficient.
+- **Never style bare HTML elements inside a component.** Every meaningful child gets a BEM element class. Style `.card__image`, not `img` nested inside `.card__media`.
+
+```css
+/* Bad — bare element selector inside a component */
+.card__media {
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+/* Good — explicit BEM element class */
+.card__image {
+  width: 100%;
+  object-fit: cover;
+}
+```
 
 ### State classes
 See `references/stateful-selectors.md` for the full guide on ARIA attributes, pseudo-classes, `is-`/`has-` prefixes, and state component tokens.

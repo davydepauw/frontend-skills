@@ -1,6 +1,6 @@
 # Front-end skills
 
-A collection of front-end agent skills for Claude Code.
+A collection of front-end agent skills compatible with any AI coding agent that supports the [Agent Skills open standard](https://agentskills.io).
 
 ## Installation & Updates
 

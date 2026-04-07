@@ -5,8 +5,8 @@
 | Stage | Definition | CSS responsibility |
 |-------|------------|-------------------|
 | **Atoms** | Smallest indivisible UI elements | Intrinsic styles only: typography, colour, spacing on the element itself |
-| **Molecules** | Simple groups of atoms functioning together | Relative layout between atoms (gap, flex); no external positioning |
-| **Organisms** | Complex UI sections composed of molecules | Section-level layout; may own a background, border, or padding |
+| **Molecules** | Simple groups of 2–3 atoms with a single, focused purpose | Relative layout between atoms (gap, flex); no external positioning |
+| **Organisms** | Complex UI sections composed of multiple molecules or atoms | Section-level layout; may own a background, border, or padding |
 | **Templates** | Page-level layout skeletons | Grid/flex containers, slot areas; no visual styling |
 | **Pages** | Specific instances of templates with real content | Overrides for content-specific edge cases only |
 
@@ -53,6 +53,23 @@ Organisms own their internal layout and may apply background/border/padding that
   padding-inline: var(--space-4);
   background: var(--color-surface);
 }
+```
+
+### Card: molecule or organism?
+
+A card is almost always an **organism**. It typically composes multiple distinct molecules or atoms — media, a content block, a footer with actions — each with their own layout responsibility. That makes it complex enough to be an organism.
+
+A card would only be a molecule if it contains just 2–3 atoms with a single purpose (e.g., an icon + label pairing). If it has sections — header, body, footer, or media — it is an organism.
+
+```
+.card              → organism
+.card__media       → internal layout area (not a separate component)
+.card__content     → internal layout area
+.card__footer      → internal layout area
+.card__title       → atom (heading)
+.card__description → atom (text)
+.card__image       → atom (image)
+.button            → atom (reused inside .card__footer)
 ```
 
 ### Templates

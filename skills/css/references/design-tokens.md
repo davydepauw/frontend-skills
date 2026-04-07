@@ -66,7 +66,21 @@ Inside the component selector, declare local variables that reference the compon
 }
 ```
 
-Local variables have no prefix. They are scoped to the component selector and serve three purposes:
+Local variables have no prefix — not even an underscore. `--card-padding` is correct; `--_card-padding` is not. They are scoped to the component selector and serve three purposes:
+
+Local variables must reference `--c-` or `--s-` tokens — never `--p-` primitives directly:
+
+```css
+/* Bad — local variable referencing a primitive */
+.card {
+  --card-padding: var(--p-spacing-4);
+}
+
+/* Good — local variable referencing component token with semantic fallback */
+.card {
+  --card-padding: var(--c-card-padding, var(--s-component-padding));
+}
+```
 1. **Single fallback declaration** — the `--c-` → `--s-` chain is defined once, used many times
 2. **Readable aliases** — `var(--card-padding)` is clearer than repeating the full fallback chain on each property
 3. **Consumer override point** — a parent can override `--card-padding` on a specific instance
