@@ -23,6 +23,20 @@ pnpx skills add davydepauw/frontend-skills --skill='*' -g
 
 ## Available skills
 
-| Skill | Description |
-|-------|-------------|
-| [css](./skills/css/SKILL.md) | CSS architecture, tokens, modern CSS, performance, and accessibility |
+### `css-expert`
+
+An opinionated, modern CSS skill for writing scalable, maintainable stylesheets — without Tailwind or Sass.
+
+This skill enforces a structured approach built on:
+
+- **Atomic design** — CSS organised into `atoms/`, `molecules/`, `organisms/`, `templates/`, and `utilities/`, mirroring the component hierarchy
+- **Native CSS** — leveraging modern features directly: `@layer`, `:has()`, container queries, CSS nesting, `@property`, and logical properties. No preprocessors in new projects.
+- **Design token system** — a strict three-tier token architecture (`--p-` primitives → `--s-` semantic → `--c-` component) with per-theme override files
+- **BEM** — explicit, flat class naming with no arbitrary abbreviations and no bare element selectors inside components
+- **No utility classes** — all styling is component-scoped; the only exceptions are `.sr-only` and grid spanning classes like `.full-width`
+- **Progressive enhancement** — `@supports` guards only for Newly Available features; Widely Available features are used directly
+
+| | |
+|---|---|
+| Install | `pnpx skills add davydepauw/frontend-skills --skill='css-expert'` |
+| References | [SKILL.md](./skills/css-expert/SKILL.md) |

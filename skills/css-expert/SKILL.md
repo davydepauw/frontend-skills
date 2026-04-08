@@ -1,5 +1,5 @@
 ---
-name: css
+name: css-expert
 description: "Use when writing or reviewing CSS/SCSS/CSS Modules files, designing token systems, choosing architecture (BEM, Cascade Layers, atomic design), auditing performance (critical CSS, paint metrics), applying modern CSS (:has(), container queries, @layer, subgrid), ensuring accessible focus/motion/contrast, or establishing naming and file-organisation conventions. Provides expert-level CSS guidance and catches common anti-patterns."
 user-invocable: true
 paths:
