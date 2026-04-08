@@ -8,17 +8,17 @@ Re-running the same command installs or updates to the latest version.
 
 All skills:
 ```
-pnpx skills add davydepauw/frontend-skills --skill='*'
+npx skills add davydepauw/frontend-skills --skill='*'
 ```
 
 A specific skill:
 ```
-pnpx skills add davydepauw/frontend-skills --skill='<skill-name>'
+npx skills add davydepauw/frontend-skills --skill='<skill-name>'
 ```
 
 All skills globally (available across all projects):
 ```
-pnpx skills add davydepauw/frontend-skills --skill='*' -g
+npx skills add davydepauw/frontend-skills --skill='*' -g
 ```
 
 ## Available skills
@@ -38,5 +38,5 @@ This skill enforces a structured approach built on:
 
 | | Note |
 |---|---|
-| Install | ```pnpx skills add davydepauw/frontend-skills --skill='css-expert'``` |
+| Install | ```npx skills add davydepauw/frontend-skills --skill='css-expert'``` |
 | References | [SKILL.md](./skills/css-expert/SKILL.md) |
