@@ -1,5 +1,7 @@
 # CSS Architecture
 
+> This file covers structural decisions: which architecture to choose, file and folder layout, and how approaches compose. For class naming rules, formatting, and comment standards see `references/conventions.md`.
+
 ## Choosing an Architecture
 
 | Approach | Best for | Avoid when |
@@ -137,10 +139,10 @@ Styles outside any `@layer` have **higher specificity than all layers**. Be deli
 A common production combination:
 
 ```
-@layer reset, tokens, base, atoms, molecules, organisms, templates, utilities;
+@layer reset, theme, base, atoms, molecules, organisms, templates, utilities;
 
 reset      → normalize / modern reset
-tokens     → @layer with :root custom properties
+theme      → @layer with :root custom properties
 base       → element styles (typography, links)
 atoms      → smallest indivisible components
 molecules  → simple groups of atoms

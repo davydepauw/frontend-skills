@@ -129,78 +129,16 @@ Wrap third-party CSS in an anonymous layer so its specificity cannot override yo
 ## Common Features and Their Fallbacks
 
 ### CSS Grid, Subgrid, `:has()`, container queries, `color-mix()`
-All Widely Available — use directly without `@supports`.
+All Widely Available — use directly without `@supports`. See `references/modern-css.md` for full usage examples.
 
-```css
-/* Grid */
-.layout {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
+### Newly Available features — `interpolate-size`, `::details-content`, `field-sizing`, `@scope`
+Each requires `@supports`. See `references/modern-css.md` for the full examples and `@supports` syntax for each feature.
 
-/* Subgrid */
-.card {
-  display: grid;
-  grid-row: span 3;
-  grid-template-rows: subgrid;
-}
-
-/* :has() */
-form:has(:invalid) .submit {
-  opacity: 0.5;
-}
-
-/* color-mix() */
-.tint {
-  background: color-mix(in oklch, var(--s-color-primary) 20%, transparent);
-}
-```
-
-### `interpolate-size` → static show/hide fallback
-```css
-/* Fallback: instant open/close */
-.accordion__content {
-  display: none;
-}
-
-.accordion.is-open .accordion__content {
-  display: block;
-}
-
-/* Enhancement: animated height */
-@supports (interpolate-size: allow-keywords) {
-  :root { interpolate-size: allow-keywords; }
-
-  .accordion__content {
-    display: block;
-    block-size: 0;
-    overflow: hidden;
-    transition: block-size 300ms ease;
-  }
-
-  .accordion.is-open .accordion__content {
-    block-size: auto;
-  }
-}
-```
-
-### `::details-content` → native `<details>` behaviour fallback
-```css
-/* Fallback: browser default open/close, no animation */
-
-/* Enhancement: animated */
-@supports selector(::details-content) {
-  details::details-content {
-    block-size: 0;
-    overflow: hidden;
-    transition: block-size 300ms ease, content-visibility 300ms allow-discrete;
-  }
-
-  details[open]::details-content {
-    block-size: auto;
-  }
-}
-```
+The general fallback pattern:
+- **`interpolate-size`** → static instant open/close (no animation, but fully functional)
+- **`::details-content`** → browser's native `<details>` behaviour (no animation)
+- **`field-sizing`** → fixed-size textarea with a JS resize observer if needed
+- **`@scope`** → BEM or CSS Modules for scoping instead
 
 ### Custom properties → inline fallback value
 ```css

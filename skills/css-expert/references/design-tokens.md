@@ -141,6 +141,8 @@ Import order is load order — primitives must load before semantics, semantics 
 | `_semantic.css` | Purpose-named tokens on `:root` | `--p-` tokens |
 | `_component.css` | Per-component overrides on `:root` | `--p-` or `--s-` tokens |
 
+> **The `--p-` boundary:** `--c-` tokens in theme files may reference `--p-` primitives directly. Local variables *inside a component selector* may not — they must go through `--c-` or `--s-` tokens. This keeps raw values out of component CSS while still allowing theme files to express exact spacing or colour primitives.
+
 ---
 
 ## Token Naming Patterns
@@ -234,19 +236,19 @@ Set `data-theme` on `<html>` via JS when the user toggles. This overrides the OS
 
 ### Cascade Layers + theming
 ```css
-@layer tokens.base, tokens.dark, tokens.user;
+@layer theme.base, theme.dark, theme.user;
 
-@layer tokens.base {
+@layer theme.base {
   :root { --s-color-surface: #fff; }
 }
 
-@layer tokens.dark {
+@layer theme.dark {
   @media (prefers-color-scheme: dark) {
     :root { --s-color-surface: #1a1a1a; }
   }
 }
 
-@layer tokens.user {
+@layer theme.user {
   [data-theme="dark"] { --s-color-surface: #1a1a1a; }
   [data-theme="light"] { --s-color-surface: #fff; }
 }
@@ -293,8 +295,8 @@ export default {
     css: {
       transformGroup: 'css',
       prefix: 'p',
-      buildPath: 'src/styles/tokens/',
-      files: [{ destination: 'primitives.css', format: 'css/variables' }],
+      buildPath: 'src/styles/theme/',
+      files: [{ destination: '_primitives.css', format: 'css/variables' }],
     },
   },
 }

@@ -22,8 +22,8 @@ Atoms style themselves, never their surroundings. An atom should not know where 
 .button {
   padding: 0.5em 1em;
   font: inherit;
-  background: var(--color-primary);
-  border-radius: var(--radius-sm);
+  background: var(--s-color-primary);
+  border-radius: var(--s-component-border-radius);
 }
 
 /* Bad — atom controlling its own margin in context */
@@ -39,7 +39,7 @@ Molecules own the **spacing between** their atoms, not the atoms themselves.
 .form-field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);   /* space between label and input atoms */
+  gap: var(--s-component-padding);   /* space between label and input atoms */
 }
 ```
 
@@ -50,8 +50,8 @@ Organisms own their internal layout and may apply background/border/padding that
 .site-header {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  padding-inline: var(--space-4);
-  background: var(--color-surface);
+  padding-inline: var(--s-component-padding);
+  background: var(--s-color-surface);
 }
 ```
 
@@ -115,7 +115,7 @@ page-layout.module.css   → template
 ```
 
 ### With design tokens
-Tokens belong at the atom level — atoms consume tokens directly. Molecules and organisms inherit through the cascade; they should rarely redeclare token values.
+Tokens belong at the atom level — atoms consume `--s-` (semantic) tokens via local variables (see `references/design-tokens.md`). Molecules and organisms inherit through the cascade; they should rarely redeclare token values.
 
 ---
 

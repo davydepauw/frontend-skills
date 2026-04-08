@@ -9,6 +9,8 @@ paths:
   - "**/*.module.scss"
 allowed-tools:
   - Read
+  - Edit
+  - Write
 ---
 
 # CSS Expert
@@ -20,7 +22,8 @@ allowed-tools:
 | Structuring a codebase (BEM, CSS Modules, `@layer`, atomic design) | `references/architecture.md` |
 | Styling UI state (ARIA attributes, `:has()`, `is-`/`has-` prefixes, state tokens) | `references/stateful-selectors.md` |
 | Applying atomic design to a component system | `references/atomic-design.md` |
-| Naming, formatting, and file-organisation conventions | `references/conventions.md` |
+| Naming, formatting, and comment conventions | `references/conventions.md` |
+| File and folder structure (where files live in the project) | `references/architecture.md` |
 | CSS custom properties, token taxonomies, theme systems | `references/design-tokens.md` |
 | `:has()`, container queries, subgrid, `@scope`, nesting, `color-mix()` | `references/modern-css.md` |
 | Supporting browsers that lack feature support | `references/progressive-enhancement.md` |
@@ -32,6 +35,8 @@ allowed-tools:
 ---
 
 ## Agent Guardrails
+
+These rules correct patterns that are common elsewhere but wrong here — either project-specific conventions or traps that frequently appear in generated CSS. Apply them even when a reference file or general best practice might suggest otherwise.
 
 Check these before generating CSS:
 
@@ -75,7 +80,8 @@ Every meaningful element inside a component gets its own BEM class. Style `.card
 
 ## Workflow
 
-1. Identify which subtopic the task touches (use the router above)
-2. Read the relevant reference file
-3. Check the guardrails for the specific feature being written
-4. Apply the pattern and note any browser-support caveats from the reference
+1. Read existing CSS files before writing or reviewing — understand which architecture (BEM, CSS Modules, or both) and token naming the project already uses
+2. Identify which subtopic the task touches (use the router above)
+3. Read the relevant reference file
+4. Check the guardrails for the specific feature being written
+5. Apply the pattern and note any browser-support caveats from the reference
