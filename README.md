@@ -36,7 +36,6 @@ This skill enforces a structured approach built on:
 - **No utility classes** — all styling is component-scoped; the only exceptions are `.sr-only` and grid spanning classes like `.full-width`
 - **Progressive enhancement** — `@supports` guards only for Newly Available features; Widely Available features are used directly
 
-| | |
 |---|---|
 | Install | `pnpx skills add davydepauw/frontend-skills --skill='css-expert'` |
 | References | [SKILL.md](./skills/css-expert/SKILL.md) |
