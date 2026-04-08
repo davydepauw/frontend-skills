@@ -4,6 +4,10 @@
   "description": "Front-end agent skills for Claude Code",
   "author": "Davy De Pauw",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davydepauw/frontend-skills.git"
+  },
   "keywords": [
     "claude-code",
     "agent-skills",
