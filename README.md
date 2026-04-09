@@ -40,3 +40,6 @@ This skill enforces a structured approach built on:
 |---|---|
 | Install | ```npx skills add davydepauw/frontend-skills --skill='css-expert'``` |
 | References | [SKILL.md](./skills/css-expert/SKILL.md) |
+| Manual eval prompts | [evals/evals.json](./skills/css-expert/evals/evals.json) (for regression-style testing in agents that support it) |
+
+**Cursor / editor metadata (optional):** [SKILL.md](./skills/css-expert/SKILL.md) may include extra YAML keys (`user-invocable`, `paths`, `allowed-tools`) for hosts that read them. The [Agent Skills](https://agentskills.io) open standard uses `name` and `description` in frontmatter; other keys are typically ignored by spec-only tooling and safe to leave for Cursor compatibility.

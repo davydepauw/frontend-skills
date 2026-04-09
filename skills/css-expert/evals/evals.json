@@ -1,0 +1,35 @@
+{
+  "skill_name": "css-expert",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're starting a new `organisms/product-card` in our design-system repo. Add `product-card.module.css` with BEM-style class names (mapped through the module), use our token pattern: local variables like `--card-padding` must chain `var(--c-product-card-padding, var(--s-component-padding))`, no primitives on the component. Include a horizontal layout from a container query at `min-width: 28rem` and mention any stacking-context gotcha for fixed children.",
+      "expected_output": "CSS Module file with BEM-ish names, correct --c-/--s- local var chain, @container usage, and awareness of container stacking context for fixed positioning.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "This legacy file uses SCSS and nested `img` under `.teaser__media`. Refactor selectors so we don't target bare `img` inside the component, without changing the compiled class names the JSX already relies on.",
+      "expected_output": "SCSS updated to use an explicit element class (e.g. `.teaser__image`) instead of nesting `img`, preserving existing block/element names.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our app is Tailwind-first (`className` utilities everywhere). One new screen design spec lists BEM and design tokens—should we migrate this screen to the css-expert methodology? Give a short recommendation and, if we stay on Tailwind, how you'd still ship the screen.",
+      "expected_output": "Agent defers to existing Tailwind convention unless user explicitly migrates; recommends consistency with the codebase; optional incremental approach if migrating.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Review this ruleset: `.drawer { aria-hidden: true; disabled: true; }` — what's wrong and how should visibility/disabled state be expressed for CSS?",
+      "expected_output": "Identifies invalid CSS properties; points to selectors on attributes/classes or HTML state, not fake CSS properties.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Add `@layer` so theme overrides win over component defaults. We already have `@layer reset, components, theme` declared at the top of our entry CSS. Where should a new `.button { background: var(--s-color-primary); }` live and how do we ensure a theme file can override background without `!important`?",
+      "expected_output": "Explanation that later layers in the layer order beat earlier ones regardless of source order; place defaults in `components` and overrides in `theme` (or equivalent), avoid !important.",
+      "files": []
+    }
+  ]
+}

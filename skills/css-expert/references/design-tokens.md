@@ -1,5 +1,7 @@
 # Design Tokens
 
+**On this page:** [Token taxonomy](#token-taxonomy-four-level-model) · [Theme file structure](#theme-file-structure) · [Naming patterns](#token-naming-patterns) · [Theming](#theming) · [DTCG format](#dtcg-format-design-token-community-group) · [Style Dictionary](#style-dictionary-integration) · [Pitfalls](#pitfalls)
+
 ## Token Taxonomy (Four-Level Model)
 
 ```
